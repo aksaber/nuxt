@@ -403,9 +403,9 @@ export default {
                     transition: all .5s;
                     &:hover {
                         transform: scale(1.2);
-                        >div {
-                            display: block;
-                        }
+                        // >div {
+                        //     display: block;
+                        // }
                     }
                     >div {
                         display: none;

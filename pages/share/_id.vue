@@ -22,7 +22,7 @@
                     <nuxtLink :to="item.id | urlFilter" class="flex">
                         <img
                             :src="item.coverImage ? item.coverImage : require('../../assets/home-swiper.png')"
-                            style="border-radius: 50%; width: 160px; height: 160px"
+                            style="border-radius: 50%; height: 160px"
                         />
                         <div class="share-item-right">
                             <p :title="item.title">{{ item.title }}</p>

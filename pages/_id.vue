@@ -92,18 +92,22 @@ export default {
         })();
 
         // 手指事件
-        // document.addEventListener('touchstart', () => {
-        //     this.touch(event)
-        // }, false);  
+        document.addEventListener('touchstart', () => {
+            this.touch(event)
+        }, false);  
 
         // 页面缩放事件
-        window.onresize = function() {
-            console.log(111)
-        }
+        // window.onresize = function() {
+        //     console.log(111)
+        // }
     },
     methods: {
         touch(event) {
-            console.log(event)
+            console.log(event.touches[0].clientX)
+            // 双指
+            // if (event.touches.length == 2) {
+            //     event.touches
+            // }
             document.getElementById('infocontent').style.maxWidth = `${event.touches[0].clientX}px`;
         },
         getInfo(id) {
