@@ -13,7 +13,7 @@
                     <li><nuxt-link :to="headerData.length > 1 ? headerData[1].url : null">奇门占卜</nuxt-link></li> -->
                     <li><a :href="headerData.length > 0 ? headerData[0].url : null">风水课程</a></li>
                     <li><a :href="headerData.length > 1 ? headerData[1].url : null">奇门占卜</a></li>
-                    <li style="color: #fff">匿名占卜</li>
+                    <li><nuxtLink to="../anonymous">匿名占卜</nuxtLink></li>
                     <li><nuxtLink to="../share">博文分享</nuxtLink></li>
                     <li><a href="#footer">联系我</a></li>
                 </ul>
@@ -36,7 +36,7 @@
                 <a href="/">关于我</a>
                 <a :href="headerData.length > 0 ? headerData[0].url : null">风水课程</a>
                 <a :href="headerData.length > 1 ? headerData[1].url : null">奇门占卜</a>
-                <a>匿名占卜</a>
+                <a href="../anonymous">匿名占卜</a>
                 <a href="../share">博文分享</a>
                 <a href="#footer">联系我</a>
             </div>
@@ -161,7 +161,7 @@ export default {
         a {
             cursor: pointer;
             // color: #000;
-            color: #fff;
+            color: #30323d;
         }
     }
     .collapseDiv {

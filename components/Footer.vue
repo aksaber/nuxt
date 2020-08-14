@@ -72,7 +72,7 @@
             </div>
         </div>
         
-        <div class="center" style="padding: 20px 0">
+        <div class="center" style="padding: 20px 0!important">
             <a href="http://beian.miit.gov.cn" target="_blank" style="color: rgb(43, 43, 43)">粤ICP备20044595</a>
         </div>
     </div>

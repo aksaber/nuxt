@@ -83,6 +83,7 @@ export default {
         }
     },
     mounted() {
+
         var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
@@ -92,9 +93,9 @@ export default {
         })();
 
         // 手指事件
-        document.addEventListener('touchstart', () => {
-            this.touch(event)
-        }, false);  
+        // document.addEventListener('touchstart', () => {
+        //     this.touch(event)
+        // }, false);  
 
         // 页面缩放事件
         // window.onresize = function() {

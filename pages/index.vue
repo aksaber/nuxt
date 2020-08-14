@@ -3,7 +3,7 @@
         <Header />
         <!-- 标题 -->
         <section class="flex home-top">
-            <div class="swiper-container" v-swiper:mySwiper="swiperOption" ref="swiperOption" v-if="swiperData">
+            <div class="swiper-container" v-swiper:mySwiper="swiperOption" ref="swiperOption" v-if="initSwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" v-for="item in swiperData" :key="item">
                         <a :href="item.url"><img :src="item.image" style="width: 100%; height: 100%" /></a>
@@ -225,32 +225,8 @@ export default {
             // http: 'http://localhost:3020',
             headerData: [],
             swiperData: [],
-
-            swiperOption: {
-                notNextTick: true,
-                loop: true,
-                initialSlide: 0,
-                autoplay: {
-                    delay: 5000,
-                    stopOnLastSlide: false,
-                    disableOnInteraction: false                
-                },
-                initialSlide: 0,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev'
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    type: ''
-                },   
-                paginationClickable :true,                    
-                speed: 800,                
-                direction: "horizontal",                
-                grabCursor: true,    
-                observer: true,
-                observeParents: true,                           
-            },
+            initSwiper: false,
+            swiperOption: {},
         }
     },
     mounted() {
@@ -264,7 +240,38 @@ export default {
         fetch(url).then(response => response.json())
         .then(res => {
             if (res.code == 200) {
-                this.swiperData = res.data;
+                // 按sort从小到大排序
+                this.swiperData = res.data.sort((prev, next) => {
+                    return prev.sort - next.sort
+                })
+                this.$nextTick(() => {
+                    this.swiperOption = {
+                        notNextTick: true,
+                        loop: true,
+                        initialSlide: 0,
+                        autoplay: {
+                            delay: 5000,
+                            stopOnLastSlide: false,
+                            disableOnInteraction: false                
+                        },
+                        initialSlide: 0,
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev'
+                        },
+                        pagination: {
+                            el: '.swiper-pagination',
+                            type: ''
+                        },   
+                        paginationClickable :true,                    
+                        speed: 800,                
+                        direction: "horizontal",                
+                        grabCursor: true,    
+                        observer: true,
+                        observeParents: true,
+                    }
+                    this.initSwiper = true;
+                })
             }
         })
 

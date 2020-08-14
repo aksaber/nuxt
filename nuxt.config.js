@@ -33,7 +33,8 @@ export default {
   ** Global CSS
   */
   css: [
-      'static/css/common.css'
+      'static/css/common.css',
+    //   'element-ui/lib/theme-chalk/index.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -41,7 +42,8 @@ export default {
   */
   plugins: [
       { src: '~/plugins/vue-awesome-swiper.js', ssr: false },
-      { src: '~/plugins/ga.js', mode: 'client' }
+      { src: '~/plugins/ga.js', mode: 'client' },
+      { src: '~/plugins/element-ui.js', ssr: false }
   ],
   /*
   ** Auto import components
@@ -69,5 +71,17 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    babel: {
+        "plugins": [
+          [
+            "component",
+            {
+              "libraryName": "element-ui",
+              "styleLibraryName": "theme-chalk"
+            }
+          ]
+        ]
+    }
+    // vendor: ['element-ui']
   }
 }
