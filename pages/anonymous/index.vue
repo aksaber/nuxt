@@ -12,8 +12,40 @@
                 </div>
             </div>
 
+            <div class="modal-bg" v-show="modalShow"></div>
+            <div class="modal" v-show="modalShow">
+                <div class="modal-content">
+                    <div class="modal-title">
+                        <div class="modal-title-left">查询占卜结果</div>
+                        <img src="../../assets/close.svg" @click="modalShow = false">
+                    </div>
+                    <el-form :model="form" label-width="85px" class="modal-body">
+                        <el-form-item label="订单号">
+                            <el-input v-model="form.order"></el-input>
+                        </el-form-item>
+                        <el-form-item label="占卜结果" v-show="form.result" key="divkey2">
+                            <div style="font-size: 20px; color: #bb4d4deb">{{form.result}}</div>
+                        </el-form-item>
+                        <el-form-item label="九宫八卦图" v-show="form.paipanImage">
+                            <img :src="form.paipanImage" width="100%" />
+                        </el-form-item>
+                        <el-form-item label="补充疑问" v-show="form.result && hasUpdate == '1'" key="divkey3">
+                            <el-input
+                                type="textarea"
+                                :rows="2"
+                                placeholder="如有疑问，请再次补充"
+                                v-model="question"
+                            ></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div class="center">
+                        <el-button type="primary" @click="getAnoResult">查询</el-button>
+                        <el-button type="primary" @click="reQuestion" v-show="hasUpdate == '1'">再次提交</el-button>
+                    </div>
+                </div>
+            </div>
 
-            <el-dialog
+            <!-- <el-dialog
                 title="查询占卜结果"
                 :visible.sync="modalShow"
                 width="50%"
@@ -40,7 +72,7 @@
                         <el-button type="primary" @click="reQuestion" v-show="hasUpdate == '1'">再次提问</el-button>
                     </div>
                 </div>
-            </el-dialog>
+            </el-dialog> -->
         </div>
 
         <!-- <AnoPay v-show="payShow" @hasUpload="hasUpload" key="divkey4" />
@@ -62,7 +94,8 @@ export default {
             modalShow: false,
             form: {
                 order: '',
-                result: ''
+                result: '',
+                paipanImage: null
             },
             payShow: false,
             questionShow: false,
@@ -102,7 +135,10 @@ export default {
                         this.hasUpdate = res.data[0].hasUpdate ? res.data[0].hasUpdate : null;
                         if (res.data[0].answer && res.data[0].hasUpdate == '1') {
                             this.form.result = res.data[0].answer;
+                            this.form.paipanImage = res.data[0].paipanImage;
                         } else {
+                            this.form.result = '';
+                            this.form.paipanImage = null;
                             this.$message.warning('请等待占卜结果');
                         }
                     }else if (res.code == 200 && res.data.length == 0) {
@@ -153,6 +189,65 @@ export default {
             img {
                 width: 35%;
                 cursor: pointer;
+            }
+        }
+    }
+    .modal-bg {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .5;
+        background: #000;
+        z-index: 0;
+    }
+    .modal {
+        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .modal-content {
+            position: relative;
+            margin: 0 auto 50px;
+            background: #FFF;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.3);
+            box-sizing: border-box;
+            width: 50%;
+            margin-top: 15vh;
+            .modal-title {
+                padding: 20px 20px 10px;
+                .modal-title-left {
+                    line-height: 24px;
+                    font-size: 18px;
+                    color: #303133;
+                }
+                img {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    padding: 0;
+                    background: 0 0;
+                    border: none;
+                    outline: 0;
+                    cursor: pointer;
+                    width: 15px;
+                }
+            }
+            .modal-body {
+                padding: 30px 20px 0 20px;
+                color: #606266;
+                font-size: 14px;
+                word-break: break-all;
+                overflow-y: auto;
+                max-height: 60vh;
+            }
+            .center {
+                padding-bottom: 30px;
+                padding-top: 10px;
             }
         }
     }

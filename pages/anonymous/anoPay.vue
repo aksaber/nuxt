@@ -1,5 +1,6 @@
 <template>
     <div class="anoPay">
+        <Header />
         <img src="../../assets/nmzb-top.png" width="100%">
         <div class="bgImg">
             <img src="../../assets/anopay.jpg" width="100%">
@@ -37,7 +38,17 @@
             </div>
         </div>
 
-        <el-dialog
+        <div class="modal-bg" v-show="dialogVisible"></div>
+        <div class="modal" v-show="dialogVisible">
+            <div class="modal-content">
+                <div class="modal-header"><div>提示</div></div> 
+                <div class="modal-body">支付凭证上传成功，点击下一步进入占卜页</div>
+                <div class="modal-footer">
+                    <el-button type="primary" @click="confirm">下一步</el-button>
+                </div>
+            </div>
+        </div>
+        <!-- <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
@@ -46,7 +57,8 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirm">下一步</el-button>
             </span>
-        </el-dialog>
+        </el-dialog> -->
+        <Footer />
     </div>
 </template>
 
@@ -103,7 +115,7 @@ export default {
     .nmpay-content {
         width: 100%;
         position: absolute;
-        top: 37%;
+        top: 31.5%;
     }
     .nmpay-pay {
         display: flex;
@@ -141,6 +153,53 @@ export default {
     .nmpay-bottom {
         margin-top: 35px;
         cursor: pointer;
+    }
+    .modal-bg {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .5;
+        background: #000;
+        z-index: 0;
+    }
+    .modal {
+        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .modal-content {
+            position: relative;
+            margin: 0 auto 50px;
+            background: #FFF;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.3);
+            box-sizing: border-box;
+            width: 30%;
+            margin-top: 15vh;
+            .modal-header {
+                padding: 20px 20px 10px;
+                div {
+                    line-height: 24px;
+                    font-size: 18px;
+                    color: #303133;
+                }
+            }
+            .modal-body {
+                padding: 30px 20px;
+                color: #606266;
+                font-size: 14px;
+                word-break: break-all;
+            }
+            .modal-footer {
+                padding: 10px 20px 20px;
+                text-align: right;
+                box-sizing: border-box;
+            }
+        }
     }
 }
 </style>

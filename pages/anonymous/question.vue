@@ -1,5 +1,6 @@
 <template>
     <div class="question">
+        <Header />
         <img src="../../assets/nmzb-top.png" width="100%">
         <div class="bgImg">
             <img src="../../assets/nmzb-question.png" width="100%">
@@ -8,18 +9,34 @@
             <img src="../../assets/question-btn.png" class="nmzbBtns" @click="generateOrder">
         </div>
 
-        <el-dialog
+        <div class="modal-bg" v-show="dialogVisible"></div>
+        <div class="modal" v-show="dialogVisible">
+            <div class="modal-content">
+                <div class="modal-header"><div>提示</div></div> 
+                <div class="modal-body">
+                    <div>感谢您的信任，已完成占卜，请自行保存订单号</div>
+                    <div><span class="orderStyle" ref="order" @click="copyText">{{order}}</span>(鼠标单击即可复制) 于1个工作日内查看，谢谢。</div>
+                </div>
+                <div class="modal-footer">
+                    <el-button type="primary" @click="confirm">确定</el-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
             :before-close="handleClose">
-            <span>感谢您的信任，已完成占卜，请自行保存订单号<span class="orderStyle" ref="order" @click="copyText">{{order}}</span>于1个工作日内查看，谢谢。</span>
+            <div>感谢您的信任，已完成占卜，请自行保存订单号</div>
+            <div><span class="orderStyle" ref="order" @click="copyText">{{order}}</span>(鼠标单击即可复制) 于1个工作日内查看，谢谢。</div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirm">确定</el-button>
             </span>
-        </el-dialog>
+        </el-dialog> -->
 
         <textarea id="inputBox2" style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;"></textarea>
+        <Footer />
     </div>
 </template>
 
@@ -115,7 +132,54 @@ export default {
     .orderStyle {
         cursor: pointer;
         color: #fd4444;
-        margin: 0 5px;
+        margin-right: 5px;
+    }
+    .modal-bg {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .5;
+        background: #000;
+        z-index: 0;
+    }
+    .modal {
+        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .modal-content {
+            position: relative;
+            margin: 0 auto 50px;
+            background: #FFF;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.3);
+            box-sizing: border-box;
+            width: 30%;
+            margin-top: 15vh;
+            .modal-header {
+                padding: 20px 20px 10px;
+                div {
+                    line-height: 24px;
+                    font-size: 18px;
+                    color: #303133;
+                }
+            }
+            .modal-body {
+                padding: 30px 20px;
+                color: #606266;
+                font-size: 14px;
+                word-break: break-all;
+            }
+            .modal-footer {
+                padding: 10px 20px 20px;
+                text-align: right;
+                box-sizing: border-box;
+            }
+        }
     }
 }
 </style>

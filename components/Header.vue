@@ -8,7 +8,7 @@
                     </a>
                 </div>
                 <ul>
-                    <li><a href="/">关于我</a></li>
+                    <li><a href="/#aboutme">关于我</a></li>
                     <!-- <li><nuxt-link :to="headerData.length > 0 ? headerData[0].url : null">风水课程</nuxt-link></li>
                     <li><nuxt-link :to="headerData.length > 1 ? headerData[1].url : null">奇门占卜</nuxt-link></li> -->
                     <li><a :href="headerData.length > 0 ? headerData[0].url : null">风水课程</a></li>

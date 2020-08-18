@@ -6,7 +6,7 @@ import {
     Button,
     Upload,
     Message,
-    Dialog,
+    // Dialog,
     MessageBox
 } from 'element-ui'
 
@@ -16,7 +16,7 @@ const components = [
     FormItem,
     Button,
     Upload,
-    Dialog,
+    // Dialog,
 ];
 
 Message.install = function (Vue, options) {

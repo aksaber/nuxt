@@ -229,6 +229,16 @@ export default {
             swiperOption: {},
         }
     },
+    watch: {
+        $route: {
+            handler: function(val, oldVal){
+                // 刷新页面
+                this.$router.go(0)
+            },
+            // 深度观察监听
+            deep: true
+        }
+    },
     mounted() {
         // 初始化aos插件
         AOS.init({
@@ -236,44 +246,7 @@ export default {
         });
         // 获取导航栏跳转链接
         this.getHeader();
-        const url = `${this.http}/blog/getBanner`;
-        fetch(url).then(response => response.json())
-        .then(res => {
-            if (res.code == 200) {
-                // 按sort从小到大排序
-                this.swiperData = res.data.sort((prev, next) => {
-                    return prev.sort - next.sort
-                })
-                this.$nextTick(() => {
-                    this.swiperOption = {
-                        notNextTick: true,
-                        loop: true,
-                        initialSlide: 0,
-                        autoplay: {
-                            delay: 5000,
-                            stopOnLastSlide: false,
-                            disableOnInteraction: false                
-                        },
-                        initialSlide: 0,
-                        navigation: {
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev'
-                        },
-                        pagination: {
-                            el: '.swiper-pagination',
-                            type: ''
-                        },   
-                        paginationClickable :true,                    
-                        speed: 800,                
-                        direction: "horizontal",                
-                        grabCursor: true,    
-                        observer: true,
-                        observeParents: true,
-                    }
-                    this.initSwiper = true;
-                })
-            }
-        })
+        this.initSwiperFun();
 
         var _hmt = _hmt || [];
         (function() {
@@ -284,6 +257,56 @@ export default {
         })();
     },
     methods: {
+        initSwiperFun() {
+            const url = `${this.http}/blog/getBanner`;
+            fetch(url).then(response => response.json())
+                .then(res => {
+                    if (res.code == 200) {
+                        // 按sort从小到大排序
+                        this.swiperData = res.data.sort((prev, next) => {
+                            return prev.sort - next.sort
+                        })
+                        // 获取【关于我】轮播图的索引
+                        let aboutMe = 0;
+                        if (this.$route.hash == '#aboutme') {
+                            for (let i = 0; i < res.data.length; i++) {
+                                if (res.data[i].url == 'https://hibifsqm.com/share') {
+                                    aboutMe = res.data[i].sort - 1;
+                                    break;
+                                }
+                            }
+                        }
+                        this.$nextTick(() => {
+                            this.swiperOption = {
+                                notNextTick: true,
+                                loop: true,
+                                initialSlide: 0,
+                                autoplay: {
+                                    delay: 5000,
+                                    stopOnLastSlide: false,
+                                    disableOnInteraction: false                
+                                },
+                                initialSlide: aboutMe,
+                                navigation: {
+                                    nextEl: '.swiper-button-next',
+                                    prevEl: '.swiper-button-prev'
+                                },
+                                pagination: {
+                                    el: '.swiper-pagination',
+                                    type: ''
+                                },   
+                                paginationClickable :true,                    
+                                speed: 800,                
+                                direction: "horizontal",                
+                                grabCursor: true,    
+                                observer: true,
+                                observeParents: true,
+                            }
+                            this.initSwiper = true;
+                        })
+                    }
+                })
+        },
         jumpUrl() {
             window.location.href = 'https://www.hibifsqm.com/44'
         },
