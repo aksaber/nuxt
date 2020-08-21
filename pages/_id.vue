@@ -79,10 +79,14 @@ export default {
         ])
         return {
             blogType: res1.data.data,
-            data: res2.data.data[0]
+            data: res2.data.data[0].showBlog == 1 ? '' : res2.data.data[0]
         }
     },
     mounted() {
+        // 隐藏的博客不允许显示
+        if (this.data.showBlog == 1) {
+            this.$router.push('/')
+        }
 
         var _hmt = _hmt || [];
         (function() {

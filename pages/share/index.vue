@@ -14,7 +14,7 @@
         <div class="container row">
             <div
                 class="share-item col-xs-12 col-xl-6 col-lg-12"
-                v-for="(item, index) in data"
+                v-for="(item, index) in currentData"
                 :key="index"
                 @click="gotoBlog(item)"
             >
@@ -32,7 +32,8 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="share-more" v-show="data2.length < data.length"><span @click="showMore">more</span></div> -->
+        <div class="share-more" v-show="currentData.length < pageSize && currentData.length != data.length"><span @click="showMore">加载更多</span></div>
+        <div class="share-more" v-show="currentData.length < total && currentData.length >= pageSize"><span @click="nextPage">下一页</span></div>
         <div class="clear"></div>
       </div>
 
@@ -60,22 +61,27 @@ export default {
     data() {
         return {
             data: [],
+            currentData: [], // 每次点击加载更多增加 10 条
             blogType: [],
-            size: 10,  // 每页条数
-            page: 1,  // 当前页数
+            moreIndex: 1, //currentData当前显示的条数（超过30条翻页）
+            total: 0,
+            pageSize: 30,  // 每页条数
+            currentPage: 1,  // 当前页数
         }
     },
     async asyncData ({ params, error }) {
-        let [res1, res2] = await Promise.all([
+        let [res1] = await Promise.all([
             axios.get('https://www.hibifsqm.com/blog/getBlogType'),
-            axios.get('https://www.hibifsqm.com/blog/list')
+            // axios.get('https://www.hibifsqm.com/blog/list')
         ])
         return {
             blogType: res1.data.data,
-            data: res2.data.data
+            // data: res2.data.data,
         }
     },
     mounted() {
+        this.getList();
+
         var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
@@ -85,6 +91,24 @@ export default {
         })();
     },
     methods: {
+        getList() {
+            fetch(`https://www.hibifsqm.com/blog/list?currentPage=${this.currentPage}&pageSize=${this.pageSize}`)
+                .then(response => response.json())
+                .then(res => {
+                    if (res.code == 200) {
+                        this.data = res.data.filter(item => item.showBlog != 1);
+                        this.currentData = [];
+                        this.data.forEach((item, index) => {
+                            if (index < 10) {
+                                this.currentData.push(item);
+                            }
+                        })
+                        console.log(this.currentData)
+                        // this.data = this.data.concat(res.data.filter(item => item.showBlog != 1));
+                        this.total = res.total;
+                    }
+                })
+        },
         gotoBlog(blog) {
             this.$router.push({
                 path: '/' + blog.id
@@ -97,7 +121,20 @@ export default {
             })
         },
         showMore() {
-                
+            this.currentData = [];
+            this.moreIndex++;
+            this.data.forEach((item, index) => {
+                if (index < this.moreIndex*10) {
+                    this.currentData.push(item);
+                }
+            })
+            console.log(this.currentData.length, 'currentData,length')
+            console.log(this.data.length, 'data,length')
+            console.log(this.total, 'total,length')
+        },
+        nextPage() {
+            this.currentPage++;
+            this.getList();
         }
     },
     filters: {
