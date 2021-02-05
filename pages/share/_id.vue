@@ -14,7 +14,7 @@
         <div class="container row">
             <div
                 class="share-item col-xs-12 col-xl-6 col-lg-12"
-                v-for="(item, index) in data"
+                v-for="(item, index) in currentData"
                 :key="index"
                 @click="gotoBlog(item)"
             >
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="share-more" v-show="currentData.length < pageSize && currentData.length != data.length"><span @click="showMore">加载更多</span></div>
-        <div class="share-more" v-show="currentData.length < total && currentData.length >= pageSize"><span @click="nextPage">下一页</span></div>
+        <div class="share-more" v-show="data.length < total && currentData.length == data.length && recordTotal < total"><span @click="nextPage">下一页</span></div>
         <div class="clear"></div>
       </div>
 
@@ -63,6 +63,7 @@ export default {
             total: 0,
             pageSize: 30,  // 每页条数
             currentPage: 1,  // 当前页数
+            recordTotal: 0,
         }
     },
     async asyncData ({ params, error }) {
@@ -99,6 +100,8 @@ export default {
                                 this.currentData.push(item);
                             }
                         })
+                        // 记录当前获取的总数据，当等于total则不显示下一页
+                        this.recordTotal = this.recordTotal + res.data.length;
                         // this.data = this.data.concat(res.data.filter(item => item.showBlog != 1));
                         this.total = res.total;
                     }
@@ -213,6 +216,14 @@ export default {
             //     flex: 0 0 55%!important;
             //     max-width: 55%!important;
             // }
+            // >div {
+            //     margin: 0 auto;
+            // }
+            >div {
+                @media (max-width: 980px) {
+                    margin: 0 auto;
+                }
+            }
             @media (max-width: 1200px) {
                 margin: 0 auto;
                 flex: 0 0 55%!important;
@@ -251,7 +262,7 @@ export default {
                     -webkit-box-orient: vertical;
                     -webkit-line-clamp: 2;
                     overflow: hidden;
-                    width: 80%;
+                    width: 100%;
                     @media (max-width: 980px) {
                         font-size: 40px;
                         width: 100%;
